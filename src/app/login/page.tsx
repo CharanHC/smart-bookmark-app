@@ -4,45 +4,52 @@ import { supabase } from "@/lib/supabaseClient";
 
 export default function LoginPage() {
   const handleLogin = async () => {
+    // Automatically detect environment (localhost or vercel)
+    const redirectUrl =
+      process.env.NEXT_PUBLIC_SITE_URL
+        ? `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`
+        : `${window.location.origin}/auth/callback`;
+
     await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: "http://localhost:3000/auth/callback",
+        redirectTo: redirectUrl,
       },
     });
   };
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-slate-50 via-white to-indigo-50 font-sans">
+    <div className="relative min-h-screen flex items-center justify-center bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-slate-50 via-white to-indigo-50 font-sans selection:bg-indigo-100">
       
-      {/* Background decoration */}
-      <div className="absolute top-1/4 left-1/4 h-64 w-64 rounded-full bg-indigo-200/30 blur-[100px]" />
-      <div className="absolute bottom-1/4 right-1/4 h-64 w-64 rounded-full bg-violet-200/30 blur-[100px]" />
+      {/* Dynamic Background Elements */}
+      <div className="absolute top-1/4 left-1/4 h-72 w-72 rounded-full bg-indigo-300/20 blur-[120px] animate-pulse" />
+      <div className="absolute bottom-1/4 right-1/4 h-72 w-72 rounded-full bg-violet-300/20 blur-[120px] animate-pulse [animation-delay:2s]" />
 
       <div className="relative z-10 w-full max-w-md px-6">
-        <div className="overflow-hidden rounded-3xl border border-white/80 bg-white/70 p-10 shadow-[0_20px_50px_rgba(0,0,0,0.05)] backdrop-blur-2xl">
+        {/* Main Card */}
+        <div className="overflow-hidden rounded-[2.5rem] border border-white/80 bg-white/60 p-10 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.08)] backdrop-blur-3xl ring-1 ring-slate-200/50">
           
           {/* Header Section */}
           <div className="mb-10 text-center">
-            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-600 to-violet-500 shadow-lg shadow-indigo-200">
+             <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-600 to-violet-500 shadow-xl shadow-indigo-100">
               <svg className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
               </svg>
             </div>
-            <h2 className="text-3xl font-extrabold tracking-tight text-slate-900">
+            <h2 className="text-4xl font-black tracking-tight text-slate-900 mb-2">
               Welcome Back
             </h2>
-            <p className="mt-2 text-sm font-medium text-slate-500">
-              Sign in to access your dashboard
+            <p className="text-sm font-semibold text-slate-500 uppercase tracking-widest">
+              Secured Dashboard Access
             </p>
           </div>
 
-          {/* Login Button */}
+          {/* Action Button */}
           <button
             onClick={handleLogin}
-            className="group relative flex w-full items-center justify-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-sm font-semibold text-slate-700 shadow-sm transition-all duration-200 hover:bg-slate-50 hover:border-slate-300 hover:shadow-md active:scale-[0.98]"
+            className="group relative flex w-full items-center justify-center gap-4 rounded-2xl border border-slate-200 bg-white px-4 py-4 text-sm font-bold text-slate-700 shadow-sm transition-all duration-300 hover:border-slate-300 hover:bg-slate-50 hover:shadow-md hover:-translate-y-0.5 active:scale-[0.98]"
           >
-            {/* Google SVG Icon */}
+            {/* Google Icon */}
             <svg className="h-5 w-5" viewBox="0 0 24 24">
               <path
                 d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
@@ -64,19 +71,22 @@ export default function LoginPage() {
             Continue with Google
           </button>
 
-          {/* Footer Info */}
+          {/* Footer Note */}
           <div className="mt-8 text-center">
-            <p className="text-xs text-slate-400">
-              By continuing, you agree to our <br />
-              <span className="cursor-pointer font-medium text-slate-600 hover:underline">Terms of Service</span> and <span className="cursor-pointer font-medium text-slate-600 hover:underline">Privacy Policy</span>.
+            <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">
+              By signing in you agree to our terms
             </p>
           </div>
         </div>
-        
-        {/* Subtle Back Button */}
-        <div className="mt-6 text-center">
-          <a href="/" className="text-sm font-semibold text-slate-500 hover:text-indigo-600 transition-colors">
-            ← Back to Home
+
+        {/* Back Link */}
+        <div className="mt-8 text-center">
+          <a
+            href="/"
+            className="inline-flex items-center gap-2 text-sm font-bold text-slate-500 transition-colors hover:text-indigo-600 group"
+          >
+            <span className="transition-transform group-hover:-translate-x-1">←</span> 
+            Back to Home
           </a>
         </div>
       </div>
